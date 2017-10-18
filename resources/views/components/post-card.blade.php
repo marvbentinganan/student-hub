@@ -1,10 +1,10 @@
-<div id="post-modal" class="uk-modal-full" uk-modal>
+{{-- <div id="post-modal" class="uk-modal-full" uk-modal>
 	    <div class="uk-modal-dialog" id="post-container">
 	        
 	    </div>
-	</div>
+</div> --}}
 @foreach($posts as $post)
-	<a class="ui fluid card" id="app" {{-- href="{{ url('posts/'.$post->id.'/view') }}" --}} href="#post-modal" onclick="loadPost({{ $post->id }})" uk-toggle>
+	<a class="ui fluid card" id="app" href="{{ url('posts/'.$post->id.'/view') }}" href="#post-modal" {{-- onclick="loadPost({{ $post->id }})" uk-toggle --}}>
 		<div class="image">
 			<img src="{{ asset('storage/posts/'.$post['photo']) }}">
 		</div>

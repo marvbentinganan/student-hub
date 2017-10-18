@@ -23,6 +23,7 @@ Route::middleware(['auth'])->group(function(){
 	
 	Route::get('/user-management', 'UserController@index')->name('addUsers');
 	Route::post('/import-users', 'UserController@store')->name('uploadUsers');
+	Route::post('/add-user', 'UserController@create')->name('addNewUser');
 	Route::get('/user-access', 'SettingController@userAccess')->name('userAccess');
 	Route::post('/add-navigation', 'NavigationController@store')->name('addNav');
 	Route::post('/migrate-shs', 'UserController@migrateSHS')->name('migrateSHS');

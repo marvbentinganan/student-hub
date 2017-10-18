@@ -73,4 +73,37 @@ class UserController extends Controller
             dump($users);
         }
     }
+
+    public function create(Request $request){
+        $role = Role::where('name', $request->user_type)->first();
+        $dob = Carbon::createFromDate($request->date_of_birth)->toDateString();
+
+        $user = User::create([
+            'username' => $request->username,
+            'user_type' => $request->user_type,
+            'user_group' => $request->user_group,
+            'email' => $request->email,
+            'default_password' => bcrypt($request->password),
+            'password' => bcrypt($request->password),
+        ]);
+
+       
+        $user->profile()->create([
+            'firstname' => $request->firstname,
+            'middlename' => $request->middlename,
+            'lastname' => $request->lastname,
+            'gender' => $request->gender,
+            'date_of_birth' => $dob,
+        ]);
+
+        $user->role()->attach($role);
+
+        $user->account_setting()->create([
+            'comments_enabled' => true,
+            'default_visibility' => 1,
+        ]);
+
+        return ['message' => 'New User Added Successfully'];
+        
+    }
 }

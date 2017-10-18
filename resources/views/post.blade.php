@@ -39,13 +39,13 @@
 					</div>
 				@endforeach
 			</div>
-			<form action="" class="ui form" @submit.prevent="onSubmit">
+			<form action="" class="ui form" @submit.prevent="onSubmit" @keydown="errors.clear($event.target.name)">
 				<div class="ui fluid action input">
-				  	<input type="text" name="content" v-model="content" placeholder="Comment...">
+				  	<input type="text" id="content" name="content" v-model="content" placeholder="Comment...">
 				  	<button class="ui icon button">
 				    	<i class="send icon"></i>
 				  	</button>
-				  	{{-- <span class="ui warning message" v-text="errors.get('content')"></span> --}}
+				  	<span class="error message" v-if="errors.has('content')" v-text="errors.get('content')"></span>
 				</div>
 			</form>
 			@else
@@ -59,9 +59,33 @@
 @section('scripts')
 	<script src="{{ asset('plugins/axios/js/axios.min.js') }}"></script>
 	<script src="{{ asset('js/vue.js') }}"></script>
-	<script src="{{ asset('js/main.js') }}"></script>
+	{{-- <script src="{{ asset('js/main.js') }}"></script> --}}
 
 	<script>
+	class Errors{
+		constructor(){
+			this.errors = {}
+		}
+
+		has(field){
+			return this.errors.hasOwnProperty(field);
+		}
+
+		get(field){
+			if(this.errors[field]){
+				return this.errors[field][0];
+			}
+		}
+
+		record(errors){
+			this.errors = errors;
+		}
+
+		clear(field){
+			delete this.errors[field];
+		}
+	}
+	
 		new Vue({
 		el: '#app',
 		data: {
@@ -74,8 +98,13 @@
 		methods: {
 			onSubmit(){
 				axios.post('{{ route('addComment') }}', this.$data)
-					.then(response => notify(response.data.message, 'success', 'info icon'), $('content').val(''))
+					.then(this.onSuccess)
 					.catch(error => this.errors.record(error.response.data));
+			},
+
+			onSuccess(response){
+				notify(response.data.message, 'success', 'info icon');
+				this.content = '';
 			}
 		}
 	});

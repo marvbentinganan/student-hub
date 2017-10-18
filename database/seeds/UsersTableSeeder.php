@@ -37,5 +37,5 @@ class UsersTableSeeder extends Seeder
         ]);
         $super->role()->attach($god);
         $super->role()->attach($immortal);
-    }
+    }   
 }

@@ -41,7 +41,7 @@
 		<div class="uk-width-3-5">
 			<br>
 			<form action="">
-				 <div class="uk-margin uk-width-1-1">
+				<div class="uk-margin uk-width-1-1">
         			<textarea class="uk-textarea" name="content" id="content" placeholder="What's on your mind?"></textarea>
     			</div>
     			<div class="uk-margin">

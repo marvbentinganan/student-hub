@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use App\Models\GlobalSetting;
 use App\Models\Post;
+use Carbon\Carbon;
 use Redirect;
 use Auth;
 
@@ -22,7 +23,7 @@ class PostController extends Controller
 		if($request->hasFile('image')){
 			$name = md5_file($request->file('image')->getRealPath());
 			$ext = $request->file('image')->guessExtension();
-			$filename = $name.'.'.$ext;
+			$filename = Carbon::now().$name.'.'.$ext;
 			$request->request->add(['photo' => $filename]);
 			request()->file('image')->storeAs('posts', $filename, 'public');
 		}

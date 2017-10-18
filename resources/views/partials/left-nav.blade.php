@@ -1,5 +1,5 @@
 {{--Profile and Left Navigation--}}
-<div class="three wide column">
+<div class="three wide computer only column">
   	<div class="ui fluid secondary vertical menu">
 		<div class="ui fluid card">
 			<div class="image">

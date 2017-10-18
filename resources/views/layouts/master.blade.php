@@ -13,6 +13,7 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/semantic.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/calendar.min.css') }}" rel="stylesheet">
     <link href="{{ asset('plugins/ionicons/css/ionicons.min.css') }}" rel="stylesheet">
     <link href="{{ asset('plugins/lobibox/css/lobibox.css') }}" rel="stylesheet">
     <script src="{{ asset('js/jquery-3.0.0.min.js') }}"></script>

@@ -23,6 +23,38 @@
 			    </div>
 			</article>
 			@endforeach
+			<form action="" @submit.prevent="onSubmit">
+				<div class="uk-margin">
+					<div class="uk-inline uk-width-1-1">
+						<button type="submit" class="uk-form-icon uk-form-icon-flip" uk-icon="icon: plus-circle"></button>
+						<input type="text" class="uk-input" placeholder="Comment...">
+					</div>
+    			</div>
+			</form>
         </div>
     </div>
 </div>
+
+	<script src="{{ asset('plugins/axios/js/axios.min.js') }}"></script>
+	<script src="{{ asset('js/vue.js') }}"></script>
+	<script src="{{ asset('js/main.js') }}"></script>
+
+	<script>
+		new Vue({
+		el: '#app',
+		data: {
+			content: '',
+			user_id: '{{ auth()->id() }}',
+			post_id: '{{ $post->id }}',
+			errors : new Errors()
+		},
+
+		methods: {
+			onSubmit(){
+				axios.post('{{ route('addComment') }}', this.$data)
+					.then(response => notify(response.data.message, 'success', 'info icon'), $('#content').val(''))
+					.catch(error => this.errors.record(error.response.data));
+			}
+		}
+	});
+	</script>
