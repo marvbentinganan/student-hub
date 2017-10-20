@@ -66,6 +66,7 @@
 	     		success: function(response){
 	     			notify(response.message, 'success', 'info icon');
 	      			$('#content').val('');
+	      			$('#image').val('');
 	      			fetchPosts('all');
 	     		}
 	     	});
