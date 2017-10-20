@@ -8,6 +8,11 @@ use App\Models\Post;
 
 class CommentController extends Controller
 {
+    public function fetch(Request $request){
+        $comments = Comment::where('post_id', $request->post_id)->get();
+        return view('components.comment', compact('comments'));
+    }
+
     public function store(Request $request){
     	
     	$this->validate(request(), [

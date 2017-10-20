@@ -1,23 +1,8 @@
-class Errors{
-	constructor(){
-		this.errors = {}
-	}
+Vue.component('comment', {
+	template: ,
 
-	has(field){
-		return this.errors.hasOwnProperty(field);
+	data: {
+		comments: '',
 	}
+});
 
-	get(field){
-		if(this.errors[field]){
-			return this.errors[field][0];
-		}
-	}
-
-	record(errors){
-		this.errors = errors;
-	}
-
-	clear(field){
-		delete this.errors[field];
-	}
-}

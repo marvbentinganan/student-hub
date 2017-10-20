@@ -34,6 +34,7 @@ Route::middleware(['auth'])->group(function(){
 	Route::get('get-post', 'PostController@getPost')->name('getPost');
 
 	Route::post('/add-comment', 'CommentController@store')->name('addComment');
+	Route::get('/get-comment', 'CommentController@fetch')->name('getComments');
 
 	Route::get('/account-settings', 'SettingController@accountIndex')->name('accountSettings');
 	Route::post('/update-account', 'SettingController@accountUpdate')->name('accountUpdate');

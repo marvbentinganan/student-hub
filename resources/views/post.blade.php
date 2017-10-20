@@ -21,24 +21,10 @@
 		<div class="extra content">
 
 			@if($post->comments_enabled == true AND $global->comments_enabled == true)
-			<div class="ui comments">
-				@foreach($post->comments as $comment)
-					<div class="comment">
-						<a href="" class="avatar">
-							<img src="{{ asset('images/users/'.$comment->user['profile']['picture']) }}" alt="">
-						</a>
-						<div class="content">
-							<a href="" class="author">{{ $comment->user['profile']['firstname'].' '.$comment->user['profile']['lastname'] }}</a>
-							<div class="metadata">
-								<span class="date">{{ $comment->created_at->diffForHumans() }}</span>
-							</div>
-							<div class="text">
-								{{ $comment->content }}
-							</div>
-						</div>
-					</div>
-				@endforeach
+			<div class="ui comments" id="comments">
+				
 			</div>
+			
 			<form action="" class="ui form" @submit.prevent="onSubmit" @keydown="errors.clear($event.target.name)">
 				<div class="ui fluid action input">
 				  	<input type="text" id="content" name="content" v-model="content" placeholder="Comment...">
@@ -62,51 +48,65 @@
 	{{-- <script src="{{ asset('js/main.js') }}"></script> --}}
 
 	<script>
-	class Errors{
-		constructor(){
-			this.errors = {}
+		fetchComments({{ $post->id }});
+
+		setInterval(fetchComments({{ $post->id }}, 1000));
+
+		function fetchComments(post_id){
+			axios.get('{{ route('getComments') }}', {
+	        params:{
+	          post_id : post_id
+	        }
+	      })
+	      .then(response => $('#comments').html(response.data));
 		}
 
-		has(field){
-			return this.errors.hasOwnProperty(field);
-		}
+		class Errors{
+			constructor(){
+				this.errors = {}
+			}
 
-		get(field){
-			if(this.errors[field]){
-				return this.errors[field][0];
+			has(field){
+				return this.errors.hasOwnProperty(field);
+			}
+
+			get(field){
+				if(this.errors[field]){
+					return this.errors[field][0];
+				}
+			}
+
+			record(errors){
+				this.errors = errors;
+			}
+
+			clear(field){
+				delete this.errors[field];
 			}
 		}
 
-		record(errors){
-			this.errors = errors;
-		}
-
-		clear(field){
-			delete this.errors[field];
-		}
-	}
-	
 		new Vue({
-		el: '#app',
-		data: {
-			content: '',
-			user_id: '{{ auth()->id() }}',
-			post_id: '{{ $post->id }}',
-			errors : new Errors()
-		},
-
-		methods: {
-			onSubmit(){
-				axios.post('{{ route('addComment') }}', this.$data)
-					.then(this.onSuccess)
-					.catch(error => this.errors.record(error.response.data));
+			el: '#app',
+			data: {
+				content: '',
+				user_id: '{{ auth()->id() }}',
+				post_id: '{{ $post->id }}',
+				errors : new Errors()
 			},
 
-			onSuccess(response){
-				notify(response.data.message, 'success', 'info icon');
-				this.content = '';
+			methods: {
+				onSubmit(){
+					axios.post('{{ route('addComment') }}', this.$data)
+					.then(this.onSuccess)
+					.catch(error => this.errors.record(error.response.data));
+				},
+
+				onSuccess(response){
+					notify(response.data.message, 'success', 'info icon');
+					this.content = '';
+					fetchComments({{ $post->id }});
+				},
 			}
-		}
-	});
+		});
 	</script>
 @endsection
