@@ -2,14 +2,12 @@
 
 namespace App\Models;
 
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Laratrust\Traits\LaratrustUserTrait;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
-    use LaratrustUserTrait;
     use Notifiable;
     use SoftDeletes;
 
@@ -33,19 +31,23 @@ class User extends Authenticatable
 
     protected $dates = ['deleted_at'];
 
-    public function role(){
-      return $this->belongsToMany('App\Models\Role');
+    public function role()
+    {
+        return $this->belongsToMany('App\Models\Role');
     }
 
-    public function profile(){
+    public function profile()
+    {
         return $this->hasOne('App\Models\Profile');
     }
 
-    public function account_setting(){
+    public function account_setting()
+    {
         return $this->hasOne(AccountSetting::class);
     }
 
-    public function post(){
+    public function post()
+    {
         return $this->hasMany(Post::class)->latest();
     }
 }
